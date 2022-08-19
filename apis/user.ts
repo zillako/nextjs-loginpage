@@ -1,59 +1,52 @@
-import axios, { AxiosError } from 'axios';
+import { AxiosError, AxiosResponse } from 'axios';
+import { request } from './base';
 
-const BASE_URL = 'https://ably-frontend-assignment-server.vercel.app';
-const request = axios.create({
-  baseURL: BASE_URL,
-});
-
+/**
+ * 로그인
+ * @param args email, password
+ * @returns accessToken
+ * @error
+ * - 400 : 잘못된 비밀번호에요
+ * - 404 : email과 일치하는 회원 정보가 없어요
+ */
 export const api_login = async (args: { email: string; password: string }) => {
-  try {
-    const endpoint = '/api/login';
-    const res = await request.post(endpoint, { email: args.email, password: args.password });
+  const endpoint = '/api/login';
+  const res = await request.post(endpoint, { email: args.email, password: args.password });
 
-    if (res.status === 200) {
-      return res.data.accessToken;
-    }
-
-    return '';
-  } catch (error: AxiosError | any) {
-    if (error.response) {
-      console.log(error.response.status, error.message);
-    } else {
-      // 오류를 발생시킨 요청을 설정하는 중에 문제가 발생했습니다.
-      console.log('Error', error.message);
-    }
-
-    throw error;
+  if (res.status === 200) {
+    return res.data.accessToken;
   }
+
+  return '';
 };
 
+/**
+ * 회원 정보 조회
+ * @param args
+ * @returns User
+ * - 401 : 인증 정보가 잘못 되었어요
+ * - 404 :
+ */
 export const api_user = async (args: { accessToken: string }) => {
-  try {
-    const endpoint = `/api/user`;
-    const accessToken = args.accessToken;
-    if (!accessToken) {
-      throw new Error('No access token');
-    }
+  const endpoint = `/api/user`;
+  const accessToken = args.accessToken;
+  if (!accessToken) {
+    const newError = new AxiosError();
+    newError.status = '401';
+    newError.message = '인증 정보가 잘못 되었어요';
 
-    const res = await request.get(endpoint, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
-
-    if (res.status === 200) {
-      return res.data;
-    }
-
-    return '';
-  } catch (error: AxiosError | any) {
-    if (error.response) {
-      console.log(error.response.status, error.message);
-    } else {
-      // 오류를 발생시킨 요청을 설정하는 중에 문제가 발생했습니다.
-      console.log('Error', error.message);
-    }
-
-    throw error;
+    throw newError;
   }
+
+  const res = await request.get(endpoint, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+  if (res.status === 200) {
+    return res.data;
+  }
+
+  return '';
 };

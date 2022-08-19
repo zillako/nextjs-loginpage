@@ -1,10 +1,10 @@
 import React, { useRef } from 'react';
-import { GetStaticProps, GetStaticPaths, GetServerSideProps } from 'next';
 import styles from './login.module.scss';
 import classNames from 'classnames/bind';
 import { useUser } from '@/hooks/user';
 import Input from '@/components/Atoms/Input';
 import Button from '@/components/Atoms/Button';
+import { extractErrorMessage } from '@/apis/base';
 
 const cx = classNames.bind(styles);
 
@@ -21,7 +21,12 @@ const LoginPage: React.FC<Props> = (props) => {
     const password = passwordInputRef.current?.value;
 
     if (email && password) {
-      await login({ email, password });
+      try {
+        await login({ email, password });
+      } catch (error) {
+        const message = extractErrorMessage(error);
+        alert(message);
+      }
     }
   };
 
@@ -45,10 +50,6 @@ const LoginPage: React.FC<Props> = (props) => {
       </form>
     </div>
   );
-};
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  return { props: {} };
 };
 
 export default LoginPage;

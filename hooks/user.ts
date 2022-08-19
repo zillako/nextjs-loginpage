@@ -41,9 +41,9 @@ export const useUser = (args?: {
 
   useEffect(() => {
     if (error) {
-      const status = (error as AxiosError)?.response?.status;
+      const status = (error as AxiosError)?.status;
 
-      if (status === 401 || status === 404 || status === 500) {
+      if (status === '401' || status === '404') {
         deleteAccessToken();
       }
     }
@@ -67,14 +67,9 @@ export const useUser = (args?: {
    * password
    */
   const login = async (args: { email: string; password: string }) => {
-    try {
-      const accessToken = await api_login(args);
-      setAccessToken(accessToken);
-      queryClient.invalidateQueries([USER_QUERY_KEY]);
-    } catch (error: AxiosError | any) {
-      //
-      console.log('message:', error.message);
-    }
+    const accessToken = await api_login(args);
+    setAccessToken(accessToken);
+    queryClient.invalidateQueries([USER_QUERY_KEY]);
   };
 
   return {
