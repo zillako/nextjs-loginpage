@@ -22,7 +22,7 @@ const ProfileImage = ({ width = 'w-[7.5rem]', height = 'h-[7.5rem]', image }: Pr
           'bg-center bg-no-repeat bg-cover bg-transparent bg-white overflow-hidden rounded-full'
         )}
       >
-        <Image src={image} layout="fill" objectFit="cover" priority />
+        <Image src={image} alt="picture of the user" layout="fill" objectFit="cover" priority />
       </div>
     );
   }
