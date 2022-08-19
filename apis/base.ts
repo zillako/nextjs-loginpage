@@ -12,8 +12,8 @@ export const request = axios.create({
 request.interceptors.response.use(
   (response) => response,
   (error: AxiosError | any) => {
-    if (error?.response?.data?.message) {
-      error.message = error?.response?.data?.message;
+    if (error?.response?.data?.error?.message) {
+      error.message = error?.response?.data?.error?.message;
     }
 
     return Promise.reject(error);
