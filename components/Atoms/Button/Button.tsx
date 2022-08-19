@@ -35,8 +35,8 @@ const Button = ({
     let activeTextColor = props.activeTextColor;
 
     if (props.disabled || color === 'gray') {
-      backgroundColor = 'bg-gray-600 dark:bg-gray-200';
-      activeBackgroundColor = 'active:bg-gray-200 dark:active:bg-gray-600';
+      backgroundColor = 'bg-gray-500 dark:bg-gray-200';
+      activeBackgroundColor = 'active:bg-gray-200 dark:active:bg-gray-500';
       textColor = 'text-white dark:text-black';
       activeTextColor = 'active:text-black dark:active:text-white';
     } else if (color === 'black') {

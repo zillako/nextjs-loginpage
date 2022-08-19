@@ -1,14 +1,14 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { api_login, api_user } from '@/apis/user';
+import { api_login, api_logout, api_user } from '@/apis/user';
 import { AxiosError } from 'axios';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { User } from '@/types/user';
 import { USER_QUERY_KEY } from './queryKeys';
 import { deleteAccessToken, getAccessToken, setAccessToken } from '@/lib/cookie';
 
 export const useUser = (args?: {
-  redirectTo?: (user?: User) => string;
+  redirectTo?: string;
   redirectIfFound?: boolean;
   initialData?: User;
 }) => {
@@ -27,9 +27,11 @@ export const useUser = (args?: {
     refetch,
   } = useQuery<User>(
     [USER_QUERY_KEY],
-    () => {
+    async () => {
       const accessToken = getAccessToken();
-      return api_user({ accessToken: accessToken || '' });
+      return await api_user({ accessToken: accessToken || '' }).catch(() => {
+        return null;
+      });
     },
     {
       initialData: initialData ? { ...initialData } : undefined,
@@ -40,37 +42,35 @@ export const useUser = (args?: {
   );
 
   useEffect(() => {
-    if (error) {
-      const status = (error as AxiosError)?.status;
-
-      if (status === '401' || status === '404') {
-        deleteAccessToken();
-      }
+    // If redirectTo is set, redirect if the user was not found.
+    // If redirectIfFound is also set, redirect if the user was found
+    if (!loading && !!redirectTo && redirectIfFound === !!user) {
+      router.push(redirectTo, undefined, { shallow: true });
     }
-
-    if (
-      !!redirectTo &&
-      // If redirectTo is set, redirect if the user was not found.
-      // If redirectIfFound is also set, redirect if the user was found
-      redirectIfFound === !!user
-    ) {
-      console.log('useUser redirectTo');
-
-      router.push(redirectTo(user), undefined, { shallow: true });
-    }
-  }, [user, redirectIfFound, redirectTo, error]);
+  }, [user, redirectIfFound, redirectTo, loading, router]);
 
   /**
    * login
-   * @param args
-   * email
-   * password
+   * @param args email, password
    */
-  const login = async (args: { email: string; password: string }) => {
-    const accessToken = await api_login(args);
-    setAccessToken(accessToken);
-    queryClient.invalidateQueries([USER_QUERY_KEY]);
-  };
+  const login = useCallback(
+    async (args: { email: string; password: string }) => {
+      const accessToken = await api_login(args);
+      setAccessToken(accessToken);
+      queryClient.invalidateQueries([USER_QUERY_KEY]);
+    },
+    [queryClient]
+  );
+
+  /**
+   * logout
+   */
+  const logout = useCallback(async () => {
+    const accessToken = getAccessToken();
+    await api_logout({ accessToken });
+    deleteAccessToken();
+    queryClient.resetQueries([USER_QUERY_KEY]);
+  }, [queryClient]);
 
   return {
     user,
@@ -78,5 +78,6 @@ export const useUser = (args?: {
     loading,
     refetch,
     login,
+    logout,
   };
 };

@@ -11,7 +11,7 @@ const cx = classNames.bind(styles);
 type Props = {};
 
 const LoginPage: React.FC<Props> = (props) => {
-  const { login } = useUser({ redirectIfFound: true, redirectTo: () => '/user' });
+  const { login } = useUser({ redirectIfFound: true, redirectTo: '/user' });
 
   const emailInputRef = useRef<HTMLInputElement>(null);
   const passwordInputRef = useRef<HTMLInputElement>(null);
