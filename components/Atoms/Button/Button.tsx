@@ -5,8 +5,6 @@ import classNames from 'classnames/bind';
 const cx = classNames.bind(styles);
 
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
-  className?: string;
-  children?: React.ReactNode;
   fontSize?: string;
   fontWeight?: string;
   color?: 'black' | 'gray';
@@ -16,7 +14,6 @@ interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   activeTextColor?: string;
   height?: string;
   px?: string;
-  onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 const Button = ({

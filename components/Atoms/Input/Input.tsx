@@ -27,7 +27,7 @@ const Input: FC<Props> = ({
       <input
         className={cx(
           className,
-          'w-full bg-transparent appearance-none shadow-none rounded-none border-t-none border-l-none border-r-none border-b',
+          'w-full bg-transparent appearance-none shadow-none rounded-none border-t-none border-l-none border-r-none border-b outline-none',
 
           invalid ? 'border-red-600' : 'border-gray-600 dark:border-gray-200',
           py

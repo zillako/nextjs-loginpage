@@ -15,6 +15,7 @@ const customJestConfig = {
     '^@/hooks/(.*)$': '<rootDir>/hooks/$1',
     '^@/lib/(.*)$': '<rootDir>/lib/$1',
     '^@/pages/(.*)$': '<rootDir>/pages/$1',
+    '^@/state/(.*)$': '<rootDir>/state/$1',
     '^@/styles/(.*)$': '<rootDir>/styles/$1',
     '^@/types/(.*)$': '<rootDir>/types/$1',
   },

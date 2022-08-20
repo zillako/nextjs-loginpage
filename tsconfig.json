@@ -21,6 +21,7 @@
       "@/hooks/*": ["hooks/*"],
       "@/lib/*": ["lib/*"],
       "@/pages/*": ["pages/*"],
+      "@/state/*": ["state/*"],
       "@/styles/*": ["styles/*"],
       "@/types/*": ["types/*"]
     }
