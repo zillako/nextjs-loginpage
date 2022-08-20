@@ -22,7 +22,7 @@ const ResetPasswordChange: React.FC<Props> = (props) => {
     if (!resetPasswordState.confirmToken) {
       router.push('/resetPassword/issue');
     }
-  }, [resetPasswordState]);
+  }, [resetPasswordState, router]);
 
   const handlePasswordChange = async () => {
     try {
@@ -31,6 +31,7 @@ const ResetPasswordChange: React.FC<Props> = (props) => {
       const newPasswordConfirm = newPasswordConfirmInputRef.current?.value ?? '';
 
       await api_reset_password_change({ email, confirmToken, newPassword, newPasswordConfirm });
+      setResetPasswordState({});
       alert('비밀번호가 변경되었습니다.');
       router.push('/login', undefined, { shallow: true });
     } catch (error) {

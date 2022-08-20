@@ -12,7 +12,7 @@ const getCookie = (name: string, ctx?: GetServerSidePropsContext) => {
     return '';
   }
 
-  let matches = cookie.match(
+  const matches = cookie.match(
     new RegExp('(?:^|; )' + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + '=([^;]*)')
   );
   return matches ? decodeURIComponent(matches[1]) : undefined;
@@ -35,9 +35,9 @@ const setCookie = (
 
   let updatedCookie = encodeURIComponent(name) + '=' + encodeURIComponent(value);
 
-  for (let optionKey in options) {
+  for (const optionKey in options) {
     updatedCookie += '; ' + optionKey;
-    let optionValue = options[optionKey];
+    const optionValue = options[optionKey];
     if (optionValue !== true) {
       updatedCookie += '=' + optionValue;
     }

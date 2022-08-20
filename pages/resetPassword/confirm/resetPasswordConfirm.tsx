@@ -26,7 +26,7 @@ const ResetPasswordConfirm: React.FC<Props> = (props) => {
     if (!resetPasswordState.issueToken) {
       router.push('/resetPassword/issue');
     }
-  }, [resetPasswordState]);
+  }, [resetPasswordState, router]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -45,7 +45,7 @@ const ResetPasswordConfirm: React.FC<Props> = (props) => {
     return () => {
       clearInterval(interval);
     };
-  }, [resetPasswordState.endMillisecond]);
+  }, [resetPasswordState.endMillisecond, router]);
 
   const remainTimeString = useMemo(() => {
     if (remainMillisecond <= 0) {
