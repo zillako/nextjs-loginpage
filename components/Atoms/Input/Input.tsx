@@ -36,7 +36,7 @@ const Input: FC<Props> = ({
         {...props}
       />
       {invalid ? (
-        <div className={cx('invalid-tooltip', 'shadow')}>
+        <div className={cx('invalid-tooltip', 'text-red-600')}>
           <div>{invalid}</div>
         </div>
       ) : (
