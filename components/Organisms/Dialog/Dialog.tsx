@@ -81,7 +81,7 @@ const Dialog: React.FC<Props> = ({
     >
       <div
         className={cx(
-          'z-40 bg-white m-auto min-h-[10rem] min-w-[20rem] rounded',
+          'z-40 bg-white text-black m-auto min-h-[10rem] min-w-[20rem] rounded',
           'shadow-black shadow-2xl',
           className
         )}
